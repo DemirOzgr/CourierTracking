@@ -1,35 +1,35 @@
 package com.ozgur.migros.couriertrackingapplication.dto;
 
-import com.ozgur.migros.couriertrackingapplication.model.Courier;
+import java.time.ZonedDateTime;
 
 public class TrackingDto {
 
-    private Double time;
-    private Courier courier;
+    private ZonedDateTime zonedDateTime;
+    private int courier_Id;
     private Double lat;
     private Double lng;
 
-    public TrackingDto(Double time, Courier courier, Double lat, Double lng) {
-        this.time = time;
-        this.courier = courier;
+    public TrackingDto(ZonedDateTime zonedDateTime, int courier_Id, Double lat, Double lng) {
+        this.zonedDateTime = zonedDateTime;
+        this.courier_Id = courier_Id;
         this.lat = lat;
         this.lng = lng;
     }
 
-    public Double getTime() {
-        return time;
+    public ZonedDateTime getZonedDateTime() {
+        return zonedDateTime;
     }
 
-    public void setTime(Double time) {
-        this.time = time;
+    public void setZonedDateTime(ZonedDateTime zonedDateTime) {
+        this.zonedDateTime = zonedDateTime;
     }
 
-    public Courier getCourier() {
-        return courier;
+    public int getCourier_Id() {
+        return courier_Id;
     }
 
-    public void setCourier(Courier courier) {
-        this.courier = courier;
+    public void setCourier_Id(int courier_Id) {
+        this.courier_Id = courier_Id;
     }
 
     public Double getLat() {
@@ -46,11 +46,5 @@ public class TrackingDto {
 
     public void setLng(Double lng) {
         this.lng = lng;
-    }
-
-    @Override
-    public String toString() {
-        return "id: " + getCourier().getCourierId() + " toplamYol: " + getCourier().getTotalTravelDistance() + " zaman: " +
-                getTime() + " lat: " + getLat() + " lng: " + getLng();
     }
 }

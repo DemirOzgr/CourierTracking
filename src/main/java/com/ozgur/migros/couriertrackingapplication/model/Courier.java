@@ -1,23 +1,26 @@
 package com.ozgur.migros.couriertrackingapplication.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.time.ZonedDateTime;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
 public class Courier {
 
-    private int courierId;
-    private Double totalTravelDistance;
-
-    public int getCourierId() {
-        return courierId;
-    }
-
-    public void setCourierId(int courierId) {
-        this.courierId = courierId;
-    }
-
-    public Double getTotalTravelDistance() {
-        return totalTravelDistance;
-    }
-
-    public void setTotalTravelDistance(Double totalTravelDistance) {
-        this.totalTravelDistance = totalTravelDistance;
-    }
+    @Id
+    private int courier_Id;
+    private Double total_Travel_Distance;
+    private Double lat;
+    private Double lng;
+    private ZonedDateTime zonedDateTime;
+    private boolean enterence;
 }
