@@ -5,19 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.time.ZonedDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
-public class Stores {
+public class TrackingDto {
 
-    @Id
-    private int id;
-    private String name;
+    private ZonedDateTime zonedDateTime;
+    private int courier_Id;
     private Double lat;
     private Double lng;
 }

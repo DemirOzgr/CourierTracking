@@ -1,12 +1,11 @@
 package com.ozgur.migros.couriertrackingapplication.service;
 
-import com.ozgur.migros.couriertrackingapplication.dto.TrackingDto;
+import com.ozgur.migros.couriertrackingapplication.model.TrackingDto;
 import com.ozgur.migros.couriertrackingapplication.model.Courier;
 import com.ozgur.migros.couriertrackingapplication.model.Stores;
 import com.ozgur.migros.couriertrackingapplication.repository.CourierRepository;
 import com.ozgur.migros.couriertrackingapplication.repository.StoresRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -16,10 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DistanceService {
 
-    @Autowired
-    private StoresRepository storesRepository;
-    @Autowired
-    private CourierRepository courierRepository;
+    private final StoresRepository storesRepository;
+    private final CourierRepository courierRepository;
 
     private List<Stores> stores;
     private Courier courier;
