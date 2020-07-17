@@ -13,10 +13,8 @@ import java.util.List;
 @Service
 public class StoreCache {
 
-    private static final Logger logger = LoggerFactory.getLogger(StoreCache.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoreCache.class);
     private final StoresRepository repository;
-
     private List<Store> stores;
 
     @Autowired
@@ -26,7 +24,7 @@ public class StoreCache {
 
     @PostConstruct
     public void init() {
-        logger.info("Tüm mağazalar getiriliyor");
+        LOGGER.info("Tüm mağazalar getiriliyor");
         this.stores = repository.findAll();
     }
 

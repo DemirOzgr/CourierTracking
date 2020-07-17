@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DistanceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(DistanceService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DistanceService.class);
     private final StoreCache storeCache;
     private final CourierRepository courierRepository;
 
@@ -36,7 +36,7 @@ public class DistanceService {
         List<CourierTrack> courierTracks = courierRepository.findCourierTrackByCourierOrderByTime(id);
 
         if (CollectionUtils.isEmpty(courierTracks)) {
-            logger.warn("{} id'li kurye yok",id);
+            LOGGER.warn("{} id'li kurye yok",id);
             return 0d;
         }
 
@@ -44,7 +44,7 @@ public class DistanceService {
         for (int i = 0; i < courierTracks.size() - 1; i++) {
             totalDistance += calculateDistance(courierTracks.get(i).getLat(), courierTracks.get(i).getLng(), courierTracks.get(i + 1).getLat(), courierTracks.get(i + 1).getLng());
         }
-        logger.info("Kuryenin gittiği toplam yol {}",totalDistance);
+        LOGGER.info("Kuryenin gittiği toplam yol {}",totalDistance);
         return totalDistance;
     }
 

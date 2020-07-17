@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/stores")
 public class StoresResource {
 
-    private static final Logger logger = LoggerFactory.getLogger(StoresResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoresResource.class);
 
     private final StoresRepository storesRepository;
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Store addStore(@RequestBody Store store){
-        logger.info("{} Migros mağazası ekleniyor", store);
+        LOGGER.info("{} Migros mağazası ekleniyor", store);
         return storesRepository.save(store);
     }
 }
