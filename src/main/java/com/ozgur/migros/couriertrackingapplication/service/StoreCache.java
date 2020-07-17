@@ -22,6 +22,10 @@ public class StoreCache {
         this.repository = repository;
     }
 
+    public void refreshCache(){
+        init();
+    }
+
     @PostConstruct
     public void init() {
         LOGGER.info("Tüm mağazalar getiriliyor");
