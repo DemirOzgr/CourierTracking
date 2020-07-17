@@ -7,20 +7,19 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.ZonedDateTime;
+import javax.persistence.Table;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-public class Courier {
+@Table(name = "store")
+public class Store {
 
     @Id
-    private int courier_Id;
-    private Double total_Travel_Distance;
+    private Long id;
+    private String name;
     private Double lat;
     private Double lng;
-    private ZonedDateTime zonedDateTime;
-    private boolean enterence;
 }

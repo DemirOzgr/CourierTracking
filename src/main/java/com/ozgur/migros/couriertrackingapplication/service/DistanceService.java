@@ -1,12 +1,12 @@
 package com.ozgur.migros.couriertrackingapplication.service;
 
-import com.ozgur.migros.couriertrackingapplication.model.TrackingDto;
-import com.ozgur.migros.couriertrackingapplication.model.Courier;
-import com.ozgur.migros.couriertrackingapplication.model.Stores;
+import com.ozgur.migros.couriertrackingapplication.model.CourierTrack;
 import com.ozgur.migros.couriertrackingapplication.repository.CourierRepository;
-import com.ozgur.migros.couriertrackingapplication.repository.StoresRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -15,47 +15,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DistanceService {
 
-    private final StoresRepository storesRepository;
+    Logger logger = LoggerFactory.getLogger(DistanceService.class);
+    private final StoreCache storeCache;
     private final CourierRepository courierRepository;
 
-    private List<Stores> stores;
-    private Courier courier;
-    private Double distance;
-    boolean flag = false;
+    public boolean isCourierAtAnyStore(Long courierId) {
+        List<CourierTrack> courierTracks = courierRepository.findCourierByCourierAndTimeIsBetween(courierId, ZonedDateTime.now().minusMinutes(1), ZonedDateTime.now());
 
-    public TrackingDto courierService(TrackingDto trackingDto){
-
-        stores = storesRepository.findAll();
-        trackingDto.setZonedDateTime(ZonedDateTime.now());
-
-        if (courierRepository.findById(trackingDto.getCourier_Id())!=null){
-            courier = courierRepository.findById(trackingDto.getCourier_Id()).get();
-            if (courier.isEnterence() && trackingDto.getZonedDateTime().minusMinutes(1).compareTo(courier.getZonedDateTime())==1){
-                courier.setEnterence(false);
-            }
-            for (Stores store: stores) {
-                if (calculateDistance(trackingDto.getLat(), trackingDto.getLng(), store.getLat(), store.getLng()) <= 100) {
-                    courier.setEnterence(true);
-                    courier.setZonedDateTime(ZonedDateTime.now());
-                    courierRepository.save(courier);
-                    flag=true;
-                }
-            }
-                if (flag!=true && !courier.isEnterence()){
-                    distance = calculateDistance(courier.getLat(),courier.getLng(),trackingDto.getLat(),trackingDto.getLng());
-                    distance+=courier.getTotal_Travel_Distance();
-                    courier.setTotal_Travel_Distance(distance);
-                    courier.setZonedDateTime(ZonedDateTime.now());
-                    courierRepository.save(courier);
-                    System.out.println(distance);
-                }
-            }else
-            System.out.println("Aranan id bulunamadı");
-
-        return trackingDto;
+        if (CollectionUtils.isEmpty(courierTracks)) {
+            return false;
+        }
+        return courierTracks.stream().anyMatch(courier -> isAroundAnyStore(courier.getLat(), courier.getLng()));
     }
 
-    public Double calculateDistance(double latCourier, double lngCourier, double latMigros, double lngMigros) {
+    private boolean isAroundAnyStore(double lat, double lng) {
+        return storeCache.getStores().stream().anyMatch(store -> calculateDistance(lat, lng, store.getLat(), store.getLng()) <= 100);
+    }
+
+    public Double totalTravelDistanceByCourier(Long id) {
+        List<CourierTrack> courierTracks = courierRepository.findCourierTrackByCourierOrderByTime(id);
+
+        if (CollectionUtils.isEmpty(courierTracks)) {
+            logger.warn("{} id'li kurye yok",id);
+            return 0d;
+        }
+
+        double totalDistance = 0;
+        for (int i = 0; i < courierTracks.size() - 1; i++) {
+            totalDistance += calculateDistance(courierTracks.get(i).getLat(), courierTracks.get(i).getLng(), courierTracks.get(i + 1).getLat(), courierTracks.get(i + 1).getLng());
+        }
+        logger.info("Kuryenin gittiği toplam yol {}",totalDistance);
+        return totalDistance;
+    }
+
+    private Double calculateDistance(double latCourier, double lngCourier, double latMigros, double lngMigros) {
 
         double theta = lngCourier - lngMigros;
         double dist = Math.sin(deg2rad(latCourier)) * Math.sin(deg2rad(latMigros)) + Math.cos(deg2rad(latCourier)) * Math.cos(deg2rad(latMigros)) * Math.cos(deg2rad(theta));
@@ -73,4 +66,6 @@ public class DistanceService {
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
+
+
 }
