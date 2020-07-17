@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class StoreCache {
 
-    Logger logger = LoggerFactory.getLogger(StoreCache.class);
+    private static final Logger logger = LoggerFactory.getLogger(StoreCache.class);
 
     private final StoresRepository repository;
 

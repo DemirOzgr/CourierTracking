@@ -17,7 +17,7 @@ public class CourierResource {
     private final CourierService courierService;
     private final DistanceService distanceService;
 
-    Logger logger = LoggerFactory.getLogger(CourierResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(CourierResource.class);
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void trackCourier(@RequestBody TrackingData trackingData) {

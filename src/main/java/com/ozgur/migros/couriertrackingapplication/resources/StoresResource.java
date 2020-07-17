@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/stores")
 public class StoresResource {
 
-    Logger logger = LoggerFactory.getLogger(StoresResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(StoresResource.class);
 
     private final StoresRepository storesRepository;
     @RequestMapping(value = "", method = RequestMethod.POST)

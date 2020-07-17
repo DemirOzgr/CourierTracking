@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CourierService {
 
-    Logger logger = LoggerFactory.getLogger(CourierService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CourierService.class);
     private final CourierRepository repository;
     private final DistanceService distanceService;
 
@@ -25,7 +25,7 @@ public class CourierService {
             return;
         }
         CourierTrack courierTrack = CourierTrack.builder().courier(tracking.getCourier()).lat(tracking.getLat()).lng(tracking.getLng()).time(tracking.getTime()).build();
-        logger.info("Kurye eklendi {}", courierTrack);
         repository.save(courierTrack);
+        logger.info("Kurye eklendi {}", courierTrack);
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DistanceService {
 
-    Logger logger = LoggerFactory.getLogger(DistanceService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DistanceService.class);
     private final StoreCache storeCache;
     private final CourierRepository courierRepository;
 
